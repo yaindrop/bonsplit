@@ -373,10 +373,10 @@ final class BonsplitTests: XCTestCase {
 
     func testDefaultSplitButtonTooltips() {
         let defaults = BonsplitConfiguration.SplitButtonTooltips.default
-        XCTAssertEqual(defaults.newTerminal, "New Terminal")
-        XCTAssertEqual(defaults.newBrowser, "New Browser")
-        XCTAssertEqual(defaults.splitRight, "Split Right")
-        XCTAssertEqual(defaults.splitDown, "Split Down")
+        XCTAssertEqual(defaults.newTerminal, bonsplitText("splitButton.newTerminal", "New Terminal"))
+        XCTAssertEqual(defaults.newBrowser, bonsplitText("splitButton.newBrowser", "New Browser"))
+        XCTAssertEqual(defaults.splitRight, bonsplitText("splitButton.splitRight", "Split Right"))
+        XCTAssertEqual(defaults.splitDown, bonsplitText("splitButton.splitDown", "Split Down"))
     }
 
     func testDefaultSplitActionButtons() {
@@ -1873,12 +1873,12 @@ final class BonsplitTests: XCTestCase {
         )
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let moveItem = menu.items.first { $0.title == "Move Tab" }
+        let moveItem = menu.items.first { $0.title == bonsplitText("tabContext.moveTab", "Move Tab") }
 
         XCTAssertEqual(moveDestinationRequestCount, 1)
         XCTAssertNotNil(moveItem)
         XCTAssertTrue(moveItem?.isEnabled ?? false)
-        XCTAssertEqual(moveItem?.submenu?.items.map(\.title), ["Move Tab to New Workspace", "Workspace A"])
+        XCTAssertEqual(moveItem?.submenu?.items.map(\.title), [bonsplitText("command.moveTabToNewWorkspace.title", "Move Tab to New Workspace"), "Workspace A"])
         XCTAssertEqual(moveItem?.submenu?.items.map(\.isEnabled), [true, false])
 
         let newWorkspaceItem = try XCTUnwrap(moveItem?.submenu?.items.first)
@@ -1920,7 +1920,7 @@ final class BonsplitTests: XCTestCase {
         )
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let muteItem = try XCTUnwrap(menu.items.first { $0.title == "Mute Tab" })
+        let muteItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.muteTab", "Mute Tab") })
         target.performContextAction(muteItem)
 
         XCTAssertEqual(selectedAction, .toggleAudioMute)
@@ -1955,8 +1955,8 @@ final class BonsplitTests: XCTestCase {
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
 
-        XCTAssertTrue(menu.items.contains { $0.title == "Unmute Tab" })
-        XCTAssertFalse(menu.items.contains { $0.title == "Mute Tab" })
+        XCTAssertTrue(menu.items.contains { $0.title == bonsplitText("tabContext.unmuteTab", "Unmute Tab") })
+        XCTAssertFalse(menu.items.contains { $0.title == bonsplitText("tabContext.muteTab", "Mute Tab") })
     }
 
     @MainActor
@@ -1990,11 +1990,11 @@ final class BonsplitTests: XCTestCase {
         )
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let item = try XCTUnwrap(menu.items.first { $0.title == "Full Width Tab" })
+        let item = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.enterFullWidthTab", "Full Width Tab") })
         target.performContextAction(item)
 
         XCTAssertEqual(selectedAction, .toggleFullWidthTab)
-        XCTAssertFalse(menu.items.contains { $0.title == "Exit Full Width Tab" })
+        XCTAssertFalse(menu.items.contains { $0.title == bonsplitText("tabContext.exitFullWidthTab", "Exit Full Width Tab") })
     }
 
     @MainActor
@@ -2027,8 +2027,8 @@ final class BonsplitTests: XCTestCase {
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
 
-        XCTAssertTrue(menu.items.contains { $0.title == "Exit Full Width Tab" })
-        XCTAssertFalse(menu.items.contains { $0.title == "Full Width Tab" })
+        XCTAssertTrue(menu.items.contains { $0.title == bonsplitText("tabContext.exitFullWidthTab", "Exit Full Width Tab") })
+        XCTAssertFalse(menu.items.contains { $0.title == bonsplitText("tabContext.enterFullWidthTab", "Full Width Tab") })
     }
 
     @MainActor
@@ -2062,19 +2062,19 @@ final class BonsplitTests: XCTestCase {
         )
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let forkItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation to the Left" })
+        let forkItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversation.default.left", "Fork Conversation to the Left") })
         target.performContextAction(forkItem)
         XCTAssertEqual(selectedAction, .forkConversation)
 
-        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation To" })
+        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversationTo", "Fork Conversation To") })
         let destinationItems = try XCTUnwrap(forkSubmenuItem.submenu?.items.filter { !$0.isSeparatorItem })
         XCTAssertEqual(
             destinationItems.map(\.title),
-            ["Right Split", "Left Split", "Top Split", "Bottom Split", "New Tab", "New Workspace"]
+            [bonsplitText("tabContext.forkConversation.right", "Right Split"), bonsplitText("tabContext.forkConversation.left", "Left Split"), bonsplitText("tabContext.forkConversation.top", "Top Split"), bonsplitText("tabContext.forkConversation.bottom", "Bottom Split"), bonsplitText("tabContext.forkConversation.newTab", "New Tab"), bonsplitText("tabContext.forkConversation.newWorkspace", "New Workspace")]
         )
         XCTAssertEqual(destinationItems.map(\.state), [.off, .on, .off, .off, .off, .off])
 
-        let newTabItem = try XCTUnwrap(destinationItems.first { $0.title == "New Tab" })
+        let newTabItem = try XCTUnwrap(destinationItems.first { $0.title == bonsplitText("tabContext.forkConversation.newTab", "New Tab") })
         target.performContextAction(newTabItem)
         XCTAssertEqual(selectedAction, .forkConversationNewTab)
     }
@@ -2108,8 +2108,8 @@ final class BonsplitTests: XCTestCase {
         )
 
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let forkItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation to the Left" })
-        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation To" })
+        let forkItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversation.default.left", "Fork Conversation to the Left") })
+        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversationTo", "Fork Conversation To") })
         let destinationItems = try XCTUnwrap(forkSubmenuItem.submenu?.items.filter { !$0.isSeparatorItem })
 
         XCTAssertFalse(forkItem.isEnabled)
@@ -2146,8 +2146,8 @@ final class BonsplitTests: XCTestCase {
             forkConversationAvailabilityProvider: { availability }
         )
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let forkItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation to the Right" })
-        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation To" })
+        let forkItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversation.default.right", "Fork Conversation to the Right") })
+        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversationTo", "Fork Conversation To") })
 
         XCTAssertFalse(forkItem.isEnabled)
         XCTAssertFalse(forkSubmenuItem.isEnabled)
@@ -2207,8 +2207,8 @@ final class BonsplitTests: XCTestCase {
             }
         )
         let menu = TabContextMenuBuilder.makeMenu(snapshot: snapshot, target: target)
-        let forkItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation to the Right" })
-        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == "Fork Conversation To" })
+        let forkItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversation.default.right", "Fork Conversation to the Right") })
+        let forkSubmenuItem = try XCTUnwrap(menu.items.first { $0.title == bonsplitText("tabContext.forkConversationTo", "Fork Conversation To") })
 
         menu.menuWillOpen(menu)
         menu.menuWillOpen(menu)
@@ -2257,7 +2257,7 @@ final class BonsplitTests: XCTestCase {
             ),
             target: target
         )
-        XCTAssertFalse(withoutRemote.items.contains { $0.title == "Disconnect SSH" })
+        XCTAssertFalse(withoutRemote.items.contains { $0.title == bonsplitText("tabContext.disconnectRemote", "Disconnect SSH") })
 
         let withRemote = TabContextMenuBuilder.makeMenu(
             snapshot: TabContextMenuSnapshot(
@@ -2268,7 +2268,7 @@ final class BonsplitTests: XCTestCase {
             ),
             target: target
         )
-        let disconnectItem = try XCTUnwrap(withRemote.items.first { $0.title == "Disconnect SSH" })
+        let disconnectItem = try XCTUnwrap(withRemote.items.first { $0.title == bonsplitText("tabContext.disconnectRemote", "Disconnect SSH") })
         target.performContextAction(disconnectItem)
         XCTAssertEqual(selectedAction, .disconnectRemote)
     }

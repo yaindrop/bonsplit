@@ -128,7 +128,7 @@ final class PaneOwnershipIndexTests: XCTestCase {
         )
 
         let placeholder = try! XCTUnwrap(controller.tabs(inPane: sourcePaneId).only)
-        XCTAssertEqual(placeholder.title, "Empty")
+        XCTAssertEqual(placeholder.title, bonsplitText("tabTitle.empty", "Empty"))
         XCTAssertEqual(controller.paneId(containing: placeholder.id), sourcePaneId)
         XCTAssertEqual(controller.selectedTabId(inPane: sourcePaneId), placeholder.id)
         XCTAssertEqual(controller.paneId(containing: movedTabId), newPaneId)

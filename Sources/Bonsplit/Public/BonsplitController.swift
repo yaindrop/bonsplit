@@ -688,7 +688,7 @@ public final class BonsplitController {
                 // This makes the empty side closable via tab close, and avoids apps
                 // needing to special-case empty panes.
                 internalController.addTab(
-                    TabItem(title: "Empty", icon: nil),
+                    TabItem(title: BonsplitL10n.text("tabTitle.empty", "Empty"), icon: nil),
                     toPane: sourcePane.id
                 )
             } else if internalController.paneCount > 1 {

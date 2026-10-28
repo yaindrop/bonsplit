@@ -88,7 +88,7 @@ public struct DefaultEmptyPaneView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.tertiary)
 
-            Text("No Open Tabs")
+            Text(BonsplitL10n.text("emptyPane.noOpenTabs", "No Open Tabs"))
                 .font(.headline)
                 .foregroundStyle(.secondary)
         }

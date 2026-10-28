@@ -109,7 +109,7 @@ final class SplitViewController {
             initialFocusedPaneId = nil
         } else {
             // Initialize with a single pane containing a welcome tab
-            let welcomeTab = TabItem(title: "Welcome", icon: "star")
+            let welcomeTab = TabItem(title: BonsplitL10n.text("tabTitle.welcome", "Welcome"), icon: "star")
             let initialPane = PaneState(tabs: [welcomeTab])
             resolvedRoot = .pane(initialPane)
             initialFocusedPaneId = initialPane.id
@@ -631,7 +631,10 @@ final class SplitViewController {
     func createNewTab() {
         guard let pane = focusedPane else { return }
         let count = pane.tabs.count + 1
-        let newTab = TabItem(title: "Untitled \(count)", icon: "doc")
+        let newTab = TabItem(
+            title: String(format: BonsplitL10n.text("tabTitle.untitled", "Untitled %d"), count),
+            icon: "doc"
+        )
         addTab(newTab, toPane: pane.id)
     }
 

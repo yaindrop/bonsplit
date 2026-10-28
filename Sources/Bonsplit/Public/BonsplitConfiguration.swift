@@ -400,15 +400,15 @@ extension BonsplitConfiguration {
         public static let `default` = SplitButtonTooltips()
 
         public init(
-            newTerminal: String = "New Terminal",
-            newBrowser: String = "New Browser",
-            splitRight: String = "Split Right",
-            splitDown: String = "Split Down"
+            newTerminal: String? = nil,
+            newBrowser: String? = nil,
+            splitRight: String? = nil,
+            splitDown: String? = nil
         ) {
-            self.newTerminal = newTerminal
-            self.newBrowser = newBrowser
-            self.splitRight = splitRight
-            self.splitDown = splitDown
+            self.newTerminal = newTerminal ?? BonsplitL10n.text("splitButton.newTerminal", "New Terminal")
+            self.newBrowser = newBrowser ?? BonsplitL10n.text("splitButton.newBrowser", "New Browser")
+            self.splitRight = splitRight ?? BonsplitL10n.text("splitButton.splitRight", "Split Right")
+            self.splitDown = splitDown ?? BonsplitL10n.text("splitButton.splitDown", "Split Down")
         }
     }
 
